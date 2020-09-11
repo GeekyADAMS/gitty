@@ -1,0 +1,79 @@
+html, body{
+  background-color: #9966FF;
+}
+
+.poppins{
+  font-family: 'Poppins', 'Rubik', Raleway, Arial;
+}
+
+.header{
+  font-size: 3.25rem;
+}
+.sub-text{
+  font-size: 1.2rem;
+}
+.w-mid-grid{
+  width: 33vw;
+}
+
+.bg-lines {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  border-left: 1px dashed rgba(253, 201, 186, .2);
+  border-right: 1px dashed rgba(63, 58, 57, 0.2);
+  display: -ms-flexbox;
+  display: flex;
+  z-index: 10;
+}
+
+.clickable-2{
+  transition: transform .8s ease;
+}
+.clickable-2:hover{
+  transform: scale(.95);
+  opacity: .85;
+}
+
+@media screen and (max-width: 640px) {
+  .w-mid-grid{
+    width: 67vw;
+  }
+  .bg-lines{
+    display: none;
+  }
+}
+
+.lines__line+.lines__line {
+  border-left: 1px dashed rgba(255, 255, 255, .2);
+  border-left-width: 1px;
+  border-left-style: dashed;
+  border-left-color: rgba(255, 255, 255, .4);
+}
+
+.lines__line {
+  -ms-flex: 1 1 auto;
+  flex: 1 1 auto;
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: auto;
+}
+
+body .cursor {
+  pointer-events: none;
+}
+
+body .cursor__ball {
+  position: fixed;
+  top: 0;
+  left: 0;
+  mix-blend-mode: difference;
+  z-index: 1000;
+}
+
+body .cursor__ball circle {
+  fill: #f7f8fa;
+}
