@@ -1,6 +1,13 @@
-html, body{
-  background-color: #9966FF;
+:root{
+  --matte: #0A2540;
+  --purple: #9966FF;
 }
+html, body{
+  background-color: var(--purple);
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
 .fade-text{
   color: rgba(0,0,0,.6);
 }
@@ -13,16 +20,16 @@ html, body{
   float: bottom;
 }
 .purple-bg{
-  background: #9966FF;
+  background: var(--purple);
 }
 .purple{
-  color: #9966FF;
+  color: var(--purple);
 }
 .matte-bg{
-  background: #0A2540;
+  background: var(--matte);
 }
 .matte{
-  color: #0A2540;
+  color: var(--matte);
 }
 .round-50{
   border-radius: 25px;
@@ -96,6 +103,10 @@ html, body{
   z-index: 10;
 }
 
+input:focus::-webkit-input-placeholder {
+  color: transparent;
+}
+
 .clickable-2{
   transition: transform .8s ease;
 }
@@ -113,6 +124,12 @@ html, body{
   }
   .sm-w100p{
     width: 100%;
+  }
+  ::-webkit-scrollbar-track {
+    display: none;
+  }
+  ::-webkit-scrollbar {
+   display: none;
   }
 }
 

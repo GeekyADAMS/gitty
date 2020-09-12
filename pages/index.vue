@@ -7,7 +7,7 @@
 
   <div class="tc-w-full tc-flex tc-flex-col tc-items-center tc-justify-center tc-mt-20 poppins tc-text-white tc-z-20">
     <h1 class="tc-text-white tc-font-bold header">Gitty</h1>
-    <p class="sub-text tc-mt-5 tc-font-medium text-center">Search for Github users and more</p>
+    <p class="sub-text tc-mt-5 tc-font-medium tc-text-center">Search for Github users and more</p>
 
     <input type="username" class="tc-mt-10 w-mid-grid tc-ml-2 tc-flex tc-flex-col text-center tc-items-center tc-justify-center tc-font-bold tc-box-border sub-text tc-px-5" placeholder="e.g GeekyADAMS" v-model="user" @keyup.enter="searchUser" />
 
@@ -66,12 +66,13 @@ export default {
             this.$router.push({
               path: '/search',
               query: {
-                q: this.user
+                q: this.user,
+                p: 1
               },
             })
           }
         } catch (e) {
-          this.showError('Error fetching data. Please check yoour internet connection.')
+          this.showError('Error fetching data. Please try again.')
           console.log(e)
           this.btnText = 'SEARCH'
         }
@@ -87,6 +88,11 @@ export default {
 <style scoped>
 .container {
   background: url('~assets/images/background/purple-bg.svg');
+}
+
+input:focus::-webkit-input-placeholder,
+input:hover::-webkit-input-placeholder {
+  color: transparent;
 }
 
 input {
@@ -110,7 +116,7 @@ input::placeholder {
   border-radius: 50px;
   color: #FBC3C6;
   border: 3px solid #FBC3C6;
-  background: #9765FB;
+  background: var(--purple);
   outline: none;
   z-index: 30;
 }
