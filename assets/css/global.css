@@ -1,6 +1,61 @@
 html, body{
   background-color: #9966FF;
 }
+.fade-text{
+  color: rgba(0,0,0,.6);
+}
+.ml-auto{
+  margin-left: auto;
+  float: right;
+}
+.mt-auto{
+  margin-top: auto;
+  float: bottom;
+}
+.purple-bg{
+  background: #9966FF;
+}
+.purple{
+  color: #9966FF;
+}
+.matte-bg{
+  background: #0A2540;
+}
+.matte{
+  color: #0A2540;
+}
+.round-50{
+  border-radius: 25px;
+}
+
+.h-fit{
+  height: fit-content;
+}
+.h-100p{
+  height: 100%;
+}
+.h-10{
+  height: 10vh;
+}
+.h-85{
+  height: 85vh;
+}
+.h-60{
+  height: 60vh;
+}
+.h-95p{
+  height: 95%;
+}
+
+.w-25p{
+  width: 25%;
+}
+.w-70p{
+  width: 70%;
+}
+.w-90p{
+  width: 90%;
+}
 
 .poppins{
   font-family: 'Poppins', 'Rubik', Raleway, Arial;
@@ -12,10 +67,21 @@ html, body{
 .sub-text{
   font-size: 1.2rem;
 }
+.smaller-text{
+  font-size: .7rem;
+}
+.small-text{
+  font-size: .85rem;
+}
 .w-mid-grid{
   width: 33vw;
 }
-
+.max-w-mid-grid{
+  max-width: 33vw;
+}
+.fade-white{
+  background: #F4F4F4;
+}
 .bg-lines {
   position: absolute;
   top: 0;
@@ -45,35 +111,61 @@ html, body{
   .bg-lines{
     display: none;
   }
+  .sm-w100p{
+    width: 100%;
+  }
 }
 
-.lines__line+.lines__line {
-  border-left: 1px dashed rgba(255, 255, 255, .2);
-  border-left-width: 1px;
-  border-left-style: dashed;
-  border-left-color: rgba(255, 255, 255, .4);
+::-webkit-scrollbar-track {
+  background: rgb(223, 223, 223);
+}
+::-webkit-scrollbar {
+ width: 10px;
+ cursor: pointer;
+}
+::-webkit-scrollbar-thumb {
+  background: grey;
+  background: linear-gradient(135deg, purple 0%, #8F5EE3 35%, pink 100%);
+  border-radius: 50px;
+  height: 40px;
 }
 
-.lines__line {
-  -ms-flex: 1 1 auto;
-  flex: 1 1 auto;
-  flex-grow: 1;
-  flex-shrink: 1;
-  flex-basis: auto;
+:-webkit-scrollbar-thumb:hover {
+  background: grey;
+  background: linear-gradient(135deg, purple 0%, #8F5EE3 35%, pink 100%);
 }
 
-body .cursor {
-  pointer-events: none;
+@media screen and (min-width: 640px) {
+  .lg-w-90p{
+    width: 83.5%;
+  }
+
 }
 
-body .cursor__ball {
-  position: fixed;
-  top: 0;
-  left: 0;
-  mix-blend-mode: difference;
-  z-index: 1000;
+.z-30{
+  z-index: 30;
 }
 
-body .cursor__ball circle {
-  fill: #f7f8fa;
+.lds-dual-ring {
+  width: 24px;
+  height: 24px;
+}
+.lds-dual-ring:after {
+  content: " ";
+  display: block;
+  width: 24px;
+  height: 24px;
+  margin: 0 3rem 0 1rem;
+  border-radius: 50%;
+  border: 6px solid #fff;
+  border-color: #fff transparent #fff transparent;
+  animation: lds-dual-ring 1.2s linear infinite;
+}
+@keyframes lds-dual-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
