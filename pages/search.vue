@@ -4,9 +4,9 @@
     <nuxt-link to="/"><img src="~@/assets/images/brand/logo.png" alt="Gitty logo" width="42px" class=""></nuxt-link>
 
     <div class="tc-flex tc-flex-row items-center">
-      <input type="username" class="w-mid-grid tc-mr-2 tc-flex tc-flex-col text-center tc-items-center tc-justify-center tc-box-border sub-text tc-px-5" placeholder="e.g. GeekyADAMS" v-model="user" @keyup.enter="researchUser()" />
+      <input type="username" class="w-mid-grid tc-mr-2 tc-flex tc-flex-col text-center tc-items-center tc-justify-center tc-box-border sub-text tc-px-5" placeholder="e.g. GeekyADAMS" v-model="user" @keyup.enter="researchUser" />
 
-      <button type="search" class="tc-border-0 tc-outline-0 searchBtn tc-rounded-lg tc-px-2 matte-bg" @click.prevent="researchUser()">
+      <button type="search" class="tc-border-0 tc-outline-0 searchBtn tc-rounded-lg tc-px-2 matte-bg" @click.prevent="researchUser">
         <img src="~@/assets/images/icons/search.png" alt="" width="16px" class="" v-if="searchStatus === 'search'">
         <div class="lds-dual-ring" v-if="searchStatus === 'searching'" style="margin: 0"></div>
       </button>
@@ -15,13 +15,39 @@
   </div>
 
   <div class="h-85 lg-w-90p w-90p tc-flex tc-flex-row tc-justify-between z-30">
-    <nav class="w-25p h-fit tc-bg-white lg:tc-flex tc-hidden round-50 tc-overflow-hidden poppins tc-font-medium">
-      <ul class="tc-w-full">
-        <li :class="{'tc-w-full tc-flex tc-flex-row tc-justify-center tc-px-5 tc-py-2 nav-options tc-cursor-pointer hover:tc-text-white': true, 'purple-bg tc-text-white': option.active, 'tc-bg-white fade-text': !option.active}" v-for="(option, index) in searchOptions" :key="index" @click="checkAvailabilty(index)">
-          <p class="poppins">{{option.text}}</p>
-        </li>
-      </ul>
-    </nav>
+    <div class="tc-flex tc-flex-col w-25p lg:tc-flex tc-hidden">
+      <nav class="tc-w-full h-fit tc-bg-white round-50 tc-overflow-hidden poppins tc-font-medium">
+        <ul class="tc-w-full">
+          <li :class="{'tc-w-full tc-flex tc-flex-row tc-justify-center tc-px-5 tc-py-2 nav-options tc-cursor-pointer hover:tc-text-white': true, 'purple-bg tc-text-white': option.active, 'tc-bg-white fade-text': !option.active}" v-for="(option, index) in searchOptions" :key="index" @click="checkAvailabilty(index)">
+            <p class="poppins">{{option.text}}</p>
+          </li>
+        </ul>
+      </nav>
+
+      <div class="filters tc-w-full tc-h-64 tc-mt-10 tc-bg-white round-50 tc-p-4">
+        <p class="sub-text tc-font-medium purple tc-mb-6">Filters</p>
+
+        <div class="tc-flex tc-flex-row items-center tc-cursor-pointer tc-mb-3">
+          <input type="radio" id="followers" name="filter" value="m-follow" v-model="filterTerm" @change="applyFilter">
+          <label for="followers" class="tc-ml-4 matte tc-mt-1">Most followers</label>
+        </div>
+
+        <div class="tc-flex tc-flex-row items-center tc-cursor-pointer tc-mb-3">
+          <input type="radio" id="l-followers" name="filter" value="l-follow" v-model="filterTerm" @change="applyFilter">
+          <label for="l-followers" class="tc-ml-4 matte tc-mt-1">Least followers</label>
+        </div>
+
+        <div class="tc-flex tc-flex-row items-center tc-cursor-pointer tc-mb-3">
+          <input type="radio" id="repositories" name="filter" value="m-repo" v-model="filterTerm" @change="applyFilter">
+          <label for="repositories" class="tc-ml-4 matte tc-mt-1">Most repositories</label>
+        </div>
+
+        <div class="tc-flex tc-flex-row items-center tc-cursor-pointer tc-mb-3">
+          <input type="radio" id="l-repositories" name="filter" value="l-repo" v-model="filterTerm" @change="applyFilter">
+          <label for="l-repositories" class="tc-ml-4 matte tc-mt-1">Least repositories</label>
+        </div>
+      </div>
+    </div>
 
     <div class="w-70p sm-w100p tc-bg-white h-95p tc-rounded-lg tc-flex tc-flex-col poppins tc-border-box tc-p-5">
       <p class="tc-font-bold fade-text sub-text">{{totalCount |  toFormattedDigit}} Users <span class="small-text tc-font-normal">/ showing {{searchResults.length}}</span></p>
@@ -41,12 +67,12 @@
                   </a>
                 </div>
                 <p class="tc-font-normal matte tc-mt-2">{{user.bio}}...</p>
-                <p class="smaller-text tc-font-normal matte tc-mt-1 tc-opacity-50">ID: 1362839</p>
+                <p class="smaller-text tc-font-normal matte tc-mt-1 tc-opacity-50">ID: {{user.id}}</p>
               </div>
             </div>
 
             <div class="tc-flex tc-flex-col ml-auto h-100p tc-justify-between">
-              <div class="tc-flex tc flex-row tc-mt-4 lg:tc-mt-0">
+              <div class="tc-flex tc flex-row tc-mt-4 lg:tc-mt-0 ml-auto">
                 <div class="tc-flex flex-row tc-mr-5 tc-items-center">
                   <img src="~@/assets/images/icons/followers.svg" alt="followers" width="18px" class="tc-mr-1">
                   <p class="tc-font-normal matte small-text">{{user.followers}} Followers</p>
@@ -58,9 +84,11 @@
                 </div>
               </div>
 
-              <a :href="user.html_url" target="_blank" rel="noopener noreferrer" class="ml-auto"><button class="tc-rounded-full tc-font-medium poppins tc-py-2 tc-px-5 tc-cursor-pointer clickable-2 hoverable profile-btn tc-mt-8">
+              <a :href="user.html_url" target="_blank" rel="noopener noreferrer" class="ml-auto tc-outline-none">
+                <button class="tc-rounded-full tc-font-medium poppins tc-py-2 tc-px-5 tc-cursor-pointer clickable-2 hoverable profile-btn tc-mt-8 tc-outline-none">
                   Go to profile
-                </button></a>
+                </button>
+              </a>
             </div>
           </div>
         </div>
@@ -68,12 +96,12 @@
         <img src="~@/assets/images/illustrations/Github4O4.png" alt="No Results Found" width="250px" class="tc-mt-5" v-if="!totalCount && (searchStatus != 'searching')">
       </div>
 
-      <div class="mt-auto tc-flex tc-flex-row tc-items-center tc-justify-between">
+      <div class="mt-auto tc-flex tc-flex-row tc-items-center tc-justify-between" v-if="numOfPages != 0">
         <div class="tc-flex tc-flex-row tc-items-center">
-          <button class="tc-mr-3 tc-rounded-full tc-font-medium poppins tc-py-2 tc-px-4 tc-cursor-pointer clickable-2 hoverable paginate-btn tc-outline-none tc-flex tc-flex-row tc-items-center" @click.prevent="gotoPrevious"><span>Previous</span>
+          <button class="tc-rounded-full tc-font-medium poppins tc-py-2 tc-px-4 tc-cursor-pointer clickable-2 hoverable paginate-btn tc-outline-none tc-flex tc-flex-row tc-items-center" @click.prevent="gotoPrevious"><span>Previous</span>
             <div class="lds-dual-ring" style="margin: 0" v-if="backing"></div>
           </button>
-          <button class="tc-hidden lg:tc-flex purple tc-p-2" @click.prevent="gotoFirst">First</button>
+          <button class="tc-ml-3 tc-hidden lg:tc-flex purple tc-p-2" @click.prevent="gotoFirst">First</button>
         </div>
 
         <p>page {{$route.query.p}} <span class="purple"> of</span> {{numOfPages}}</p>
@@ -110,7 +138,7 @@ export default {
       user: '',
       page: 1,
       searchStatus: 'search',
-      users: [3, 4, 2, 4, 5, 3, 2],
+      filterTerm: '',
       searchOptions: [{
           text: 'Users',
           icon: 'Icon',
@@ -149,14 +177,22 @@ export default {
     },
     numOfPages() {
       return Math.round(this.totalCount / 10)
-    }
+    },
   },
   filters: {
     toFormattedDigit(number) {
       return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     }
   },
+  watch: {
+    '$route'() {
+      this.searchUser(this.$route.query.q, this.$route.query.p, this.$route.query.s, this.$route.query.o)
+    }
+  },
   methods: {
+    hey() {
+      console.log(this.filterTerm)
+    },
     checkAvailabilty(index) {
       if (!this.searchOptions[index].active) {
         this.showError('Feature Coming Soon !')
@@ -167,9 +203,9 @@ export default {
       let currentPage = parseInt(this.$route.query.p)
       if (currentPage > 1) {
         this.backing = true
-        await this.searchUser(this.$route.query.q, currentPage - 1)
+        await this.searchUser(this.$route.query.q, currentPage - 1, this.$route.query.s, this.$route.query.o)
 
-        this.changePage(this.$route.query.q, currentPage - 1)
+        this.changePage(this.$route.query.q, currentPage - 1, this.$route.query.s, this.$route.query.o)
         this.backing = false
       }
     },
@@ -177,46 +213,79 @@ export default {
       let currentPage = parseInt(this.$route.query.p)
       if (currentPage < this.numOfPages) {
         this.nexting = true
-        await this.searchUser(this.$route.query.q, currentPage + 1)
+        await this.searchUser(this.$route.query.q, currentPage + 1, this.$route.query.s, this.$route.query.o)
 
-        this.changePage(this.$route.query.q, currentPage + 1)
+        this.changePage(this.$route.query.q, currentPage + 1, this.$route.query.s, this.$route.query.o)
         this.nexting = false
       }
     },
     async gotoFirst() {
-      await this.searchUser(this.$route.query.q, 1)
+      await this.searchUser(this.$route.query.q, 1, this.$route.query.s, this.$route.query.o)
 
-      this.changePage(this.$route.query.q, 1)
+      this.changePage(this.$route.query.q, 1, this.$route.query.s, this.$route.query.o)
     },
     async gotoLast() {
-      await this.searchUser(this.$route.query.q, this.numOfPages - 1)
+      await this.searchUser(this.$route.query.q, this.numOfPages - 1, this.$route.query.s, this.$route.query.o)
 
-      this.changePage(this.$route.query.q, this.numOfPages - 1)
+      this.changePage(this.$route.query.q, this.numOfPages - 1, this.$route.query.s, this.$route.query.o)
     },
-    changePage(user, page) {
+    changePage(user, page, s, o) {
       this.$router.push({
         path: '/search',
         query: {
           q: user,
-          p: page
+          p: page,
+          s: s,
+          o: o
         }
       })
     },
     async researchUser() {
       if (this.user) {
         this.page = 1
-        await this.searchUser(this.user, 1)
+        await this.searchUser(this.user, 1, '', '')
 
-        this.changePage(this.user, 1)
+        this.changePage(this.user, 1, '', '')
       }
     },
-    async searchUser(q, p) {
+    async applyFilter() {
+      if (!this.filterTerm) {
+        await this.searchUser(this.$route.query.q, 1, '', '')
+
+        this.changePage(this.$route.query.q, 1, '', '')
+      }
+
+      if (this.filterTerm === 'm-follow') {
+        await this.searchUser(this.$route.query.q, 1, 'followers', 'desc')
+
+        this.changePage(this.$route.query.q, 1, 'followers', 'desc')
+      }
+
+      if (this.filterTerm === 'l-follow') {
+        await this.searchUser(this.$route.query.q, 1, 'followers', 'asc')
+
+        this.changePage(this.$route.query.q, 1, 'followers', 'asc')
+      }
+
+      if (this.filterTerm === 'm-repo') {
+        await this.searchUser(this.$route.query.q, 1, 'repositories', 'desc')
+
+        this.changePage(this.$route.query.q, 1, 'repositories', 'desc')
+      }
+
+      if (this.filterTerm === 'l-repo') {
+        await this.searchUser(this.$route.query.q, 1, 'repositories', 'asc')
+
+        this.changePage(this.$route.query.q, 1, 'repositories', 'asc')
+      }
+    },
+    async searchUser(q, p, s, o) {
       const searchTerm = q
       if (searchTerm) {
         this.searchStatus = 'searching'
 
         try {
-          let response = await Request.getRequest(`/search/users?q=${q}&per_page=10&page=${p}`)
+          let response = await Request.getRequest(`/search/users?q=${q}&per_page=10&page=${p}&sort=${s}&order=${o}`)
 
           if ([200, 201].includes(response.status)) {
 
@@ -255,7 +324,7 @@ export default {
   mounted() {
     this.totalCount = this.$store.state.totalResultCount
     if (!this.searchResults.length) {
-      this.searchUser(this.$route.query.q, this.$route.query.p)
+      this.searchUser(this.$route.query.q, this.$route.query.p, this.$route.query.s, this.$route.query.o)
     }
   }
 }
@@ -297,6 +366,11 @@ export default {
 
 .card:hover {
   box-shadow: 8px 12px 34px rgba(0, 0, 0, .1)
+}
+
+input:focus::-webkit-input-placeholder,
+input:hover::-webkit-input-placeholder {
+  color: transparent;
 }
 
 input {

@@ -30,10 +30,6 @@ export default {
   link: [
     { rel: 'icon', type: 'image/png', href: '/icon.png' },
     { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap'},
-    { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Satisfy&display=swap'},
-    { rel: 'stylesheet', href: '//db.onlinewebfonts.com/c/480e3d39ed40d6543721946a2d36ccff?family=RZ'},
-    { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Anonymous+Pro&display=swap'},
-    { rel: 'stylesheet', type: 'text/css', href: 'https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap'},
     { rel: 'stylesheet', type: 'text/css', href: 'https://cdn.rawgit.com/rikmms/progress-bar-4-axios/0a3acf92/dist/nprogress.css'},
     { rel: 'stylesheet', href: '/css/pace-theme-flash.css'},
     { rel: 'stylesheet', href: '/css/animate.css'}
@@ -43,9 +39,6 @@ export default {
     { src: 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.3.1/gsap.min.js' },
     { src: '/modules/pace.min.js', 'data-pace-options': { "ajax": false } },
     { src: 'https://cdn.rawgit.com/rikmms/progress-bar-4-axios/0a3acf92/dist/index.js' },
-    { src: 'https://cdnjs.cloudflare.com/ajax/libs/tilt.js/1.2.1/tilt.jquery.min.js', body: true },
-    { type: 'text/javascript', src: '/modules/mouse-negative.js', body: true },
-    { type: 'text/javascript', src: '/modules/custom.js', body: true },
   ]
 },
   /*

@@ -1,5 +1,5 @@
 <template>
-<div class="container tc-bg-no-repeat tc-w-screen tc-h-screen max-h-screen tc-bg-cover tc--ml-1 tc-overflow-hidden md:tc-h-auto">
+<div class="container tc-bg-no-repeat tc-w-screen tc-h-screen max-h-screen tc-bg-cover tc--ml-1 tc-overflow-hidden">
 
   <div class="tc-w-full tc-h-16 tc-border-dashed border-white-500 tc-border-b tc-flex tc-flex-row tc-items-center">
     <img src="~@/assets/images/brand/logo.png" alt="" width="42px" class=" tc-ml-5">
@@ -7,7 +7,7 @@
 
   <div class="tc-w-full tc-flex tc-flex-col tc-items-center tc-justify-center tc-mt-20 poppins tc-text-white tc-z-20">
     <h1 class="tc-text-white tc-font-bold header">Gitty</h1>
-    <p class="sub-text tc-mt-5 tc-font-medium text-center">Search for Github users and more</p>
+    <p class="sub-text tc-mt-5 tc-font-medium tc-text-center">Search for Github users and more</p>
 
     <input type="username" class="tc-mt-10 w-mid-grid tc-ml-2 tc-flex tc-flex-col text-center tc-items-center tc-justify-center tc-font-bold tc-box-border sub-text tc-px-5" placeholder="e.g GeekyADAMS" v-model="user" @keyup.enter="searchUser" />
 
@@ -88,6 +88,11 @@ export default {
 <style scoped>
 .container {
   background: url('~assets/images/background/purple-bg.svg');
+}
+
+input:focus::-webkit-input-placeholder,
+input:hover::-webkit-input-placeholder {
+  color: transparent;
 }
 
 input {
