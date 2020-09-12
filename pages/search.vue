@@ -190,9 +190,6 @@ export default {
     }
   },
   methods: {
-    hey() {
-      console.log(this.filterTerm)
-    },
     checkAvailabilty(index) {
       if (!this.searchOptions[index].active) {
         this.showError('Feature Coming Soon !')

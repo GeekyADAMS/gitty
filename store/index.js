@@ -17,7 +17,5 @@ export const mutations = {
 export const actions = {
   storeSearchResults ({commit}, data) {
     commit('storeResults', data)
-
-    console.log('test: \n', data)
   }
 }
