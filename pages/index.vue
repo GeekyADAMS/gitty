@@ -1,5 +1,5 @@
 <template>
-<div class="container tc-bg-no-repeat tc-w-screen tc-h-screen max-h-screen tc-bg-cover tc--ml-1 tc-overflow-hidden">
+<div class="container tc-bg-no-repeat tc-w-screen tc-h-screen max-h-screen tc-bg-cover tc--ml-1 tc-overflow-hidden md:tc-h-auto">
 
   <div class="tc-w-full tc-h-16 tc-border-dashed border-white-500 tc-border-b tc-flex tc-flex-row tc-items-center">
     <img src="~@/assets/images/brand/logo.png" alt="" width="42px" class=" tc-ml-5">
@@ -66,12 +66,13 @@ export default {
             this.$router.push({
               path: '/search',
               query: {
-                q: this.user
+                q: this.user,
+                p: 1
               },
             })
           }
         } catch (e) {
-          this.showError('Error fetching data. Please check yoour internet connection.')
+          this.showError('Error fetching data. Please try again.')
           console.log(e)
           this.btnText = 'SEARCH'
         }
@@ -110,7 +111,7 @@ input::placeholder {
   border-radius: 50px;
   color: #FBC3C6;
   border: 3px solid #FBC3C6;
-  background: #9765FB;
+  background: var(--purple);
   outline: none;
   z-index: 30;
 }

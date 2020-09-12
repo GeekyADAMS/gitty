@@ -24,9 +24,9 @@
     </nav>
 
     <div class="w-70p sm-w100p tc-bg-white h-95p tc-rounded-lg tc-flex tc-flex-col poppins tc-border-box tc-p-5">
-      <p class="tc-font-bold fade-text sub-text">{{totalCount |  toFormattedDigit}} Users</p>
+      <p class="tc-font-bold fade-text sub-text">{{totalCount |  toFormattedDigit}} Users <span class="small-text tc-font-normal">/ showing {{searchResults.length}}</span></p>
 
-      <div class="tc-flex tc-flex-col tc-w-full tc-mt-3 h-60 tc-overflow-y-auto tc-items-center">
+      <div class="tc-flex tc-flex-col tc-w-full tc-mt-3 h-60 tc-overflow-y-auto tc-items-center" style="border-top: .6px solid var(--purple); border-bottom: .6px solid var(--purple); border-radius: 15px;">
         <div class="tc-flex tc-flex-col tc-w-full h-fit">
           <div class="card tc-w-full tc-h-auto tc-mb-3 tc-bg-white tc-flex tc-flex-row tc-p-3 tc-border-box poppins tc-flex-wrap" v-for="(user, index) in searchResults" :key="index">
             <div class="tc-flex tc-flex-row ">
@@ -66,6 +66,24 @@
         </div>
 
         <img src="~@/assets/images/illustrations/Github4O4.png" alt="No Results Found" width="250px" class="tc-mt-5" v-if="!totalCount && (searchStatus != 'searching')">
+      </div>
+
+      <div class="mt-auto tc-flex tc-flex-row tc-items-center tc-justify-between">
+        <div class="tc-flex tc-flex-row tc-items-center">
+          <button class="tc-mr-3 tc-rounded-full tc-font-medium poppins tc-py-2 tc-px-4 tc-cursor-pointer clickable-2 hoverable paginate-btn tc-outline-none tc-flex tc-flex-row tc-items-center" @click.prevent="gotoPrevious"><span>Previous</span>
+            <div class="lds-dual-ring" style="margin: 0" v-if="backing"></div>
+          </button>
+          <button class="tc-hidden lg:tc-flex purple tc-p-2" @click.prevent="gotoFirst">First</button>
+        </div>
+
+        <p>page {{$route.query.p}} <span class="purple"> of</span> {{numOfPages}}</p>
+
+        <div class="tc-flex tc-flex-row tc-items-center">
+          <button class="tc-hidden lg:tc-flex tc-mr-3 purple tc-p-2" @click.prevent="gotoLast">Last</button>
+          <button class="tc-rounded-full tc-font-medium poppins tc-py-2 tc-px-4 tc-cursor-pointer clickable-2 hoverable paginate-btn tc-outline-none tc-flex tc-flex-row tc-items-center" @click.prevent="gotoNext"><span>Next</span>
+            <div class="lds-dual-ring" style="margin: 0" v-if="nexting"></div>
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -119,12 +137,18 @@ export default {
           active: false,
         }
       ],
-      totalCount: 0
+      totalCount: 0,
+      currentPage: 1,
+      backing: false,
+      nexting: false
     }
   },
   computed: {
     searchResults() {
       return this.$store.state.searchResults
+    },
+    numOfPages() {
+      return Math.round(this.totalCount / 10)
     }
   },
   filters: {
@@ -138,23 +162,53 @@ export default {
         this.showError('Feature Coming Soon !')
       }
     },
-    researchUser() {
-      if (this.user) {
-        this.page = 1
-        this.searchUser(this.user, this.page)
+    async gotoPrevious() {
 
-        this.$router.push({
-          path: '/search',
-          query: {
-            q: this.user,
-            p: this.page
-          }
-        })
+      let currentPage = parseInt(this.$route.query.p)
+      if (currentPage > 1) {
+        this.backing = true
+        await this.searchUser(this.$route.query.q, currentPage - 1)
 
+        this.changePage(this.$route.query.q, currentPage - 1)
+        this.backing = false
       }
     },
-    showEmpty() {
+    async gotoNext() {
+      let currentPage = parseInt(this.$route.query.p)
+      if (currentPage < this.numOfPages) {
+        this.nexting = true
+        await this.searchUser(this.$route.query.q, currentPage + 1)
 
+        this.changePage(this.$route.query.q, currentPage + 1)
+        this.nexting = false
+      }
+    },
+    async gotoFirst() {
+      await this.searchUser(this.$route.query.q, 1)
+
+      this.changePage(this.$route.query.q, 1)
+    },
+    async gotoLast() {
+      await this.searchUser(this.$route.query.q, this.numOfPages - 1)
+
+      this.changePage(this.$route.query.q, this.numOfPages - 1)
+    },
+    changePage(user, page) {
+      this.$router.push({
+        path: '/search',
+        query: {
+          q: user,
+          p: page
+        }
+      })
+    },
+    async researchUser() {
+      if (this.user) {
+        this.page = 1
+        await this.searchUser(this.user, 1)
+
+        this.changePage(this.user, 1)
+      }
     },
     async searchUser(q, p) {
       const searchTerm = q
@@ -169,7 +223,7 @@ export default {
             if (response.data.items.length === 0) {
               this.showError(`Zero (0) results found for ${searchTerm}.`)
               this.searchStatus = 'search'
-              this.showEmpty()
+
               return
             }
 
@@ -186,8 +240,8 @@ export default {
             this.searchStatus = 'search'
           }
         } catch (e) {
-          this.showError('Error fetching data. Please check yoour internet connection.')
-          this.showEmpty()
+          this.showError('Error fetching data. Please try again.')
+
           console.log(e)
           this.searchStatus = 'search'
         }
@@ -214,12 +268,25 @@ export default {
 }
 
 .profile-btn {
-  color: #9966FF;
-  border: 1px dashed #9966FF;
+  color: var(--purple);
+  border: 1px dashed var(--purple);
+}
+
+.paginate-btn {
+  color: var(--matte);
+  border: 1px dashed var(--purple);
+}
+
+.paginate-btn:hover,
+.paginate-btn:active,
+.paginate-btn:focus {
+  color: white;
+  background: var(--matte);
+  outline: none;
 }
 
 .card:hover .profile-btn {
-  background: #9966FF;
+  background: var(--purple);
   color: white;
 }
 
