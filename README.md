@@ -2,6 +2,8 @@
 
 ## Build Setup
 
+Gitty is an app that lets you search Github users and their information based on username, names, repo, follower, and more.
+
 ```bash
 # install dependencies
 $ npm install
@@ -16,5 +18,3 @@ $ npm run start
 # generate static project
 $ npm run generate
 ```
-
-For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).

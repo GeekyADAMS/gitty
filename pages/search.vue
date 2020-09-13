@@ -6,7 +6,7 @@
     <div class="tc-flex tc-flex-row items-center">
       <input type="username" class="w-mid-grid tc-mr-2 tc-flex tc-flex-col text-center tc-items-center tc-justify-center tc-box-border sub-text tc-px-5" placeholder="e.g. GeekyADAMS" v-model="user" @keyup.enter="researchUser" />
 
-      <button type="search" class="tc-border-0 tc-outline-0 searchBtn tc-rounded-lg tc-px-2 matte-bg" @click.prevent="researchUser">
+      <button type="search" class="tc-border-0 tc-outline-0 searchBtn tc-rounded-lg tc-px-2 matte-bg" @click="researchUser">
         <img src="~@/assets/images/icons/search.png" alt="" width="16px" class="" v-if="searchStatus === 'search'">
         <div class="lds-dual-ring" v-if="searchStatus === 'searching'" style="margin: 0"></div>
       </button>
@@ -52,7 +52,7 @@
     <div class="w-70p sm-w100p tc-bg-white h-95p tc-rounded-lg tc-flex tc-flex-col poppins tc-border-box tc-p-5">
       <p class="tc-font-bold fade-text sub-text">{{totalCount |  toFormattedDigit}} Users <span class="small-text tc-font-normal">/ showing {{searchResults.length}}</span></p>
 
-      <div class="tc-flex tc-flex-col tc-w-full tc-mt-3 h-60 tc-overflow-y-auto tc-items-center" style="border-top: .6px solid var(--purple); border-bottom: .6px solid var(--purple); border-radius: 15px;">
+      <div class="tc-flex tc-flex-col tc-w-full tc-mt-3 h-60 tc-overflow-y-scroll tc-scrolling-auto tc-items-center" style="border-top: .6px solid var(--purple); border-bottom: .6px solid var(--purple); border-radius: 15px;">
         <div class="tc-flex tc-flex-col tc-w-full h-fit">
           <div class="card tc-w-full tc-h-auto tc-mb-3 tc-bg-white tc-flex tc-flex-row tc-p-3 tc-border-box poppins tc-flex-wrap" v-for="(user, index) in searchResults" :key="index">
             <div class="tc-flex tc-flex-row ">
@@ -98,17 +98,17 @@
 
       <div class="mt-auto tc-flex tc-flex-row tc-items-center tc-justify-between" v-if="numOfPages != 0">
         <div class="tc-flex tc-flex-row tc-items-center">
-          <button class="tc-rounded-full tc-font-medium poppins tc-py-2 tc-px-4 tc-cursor-pointer clickable-2 hoverable paginate-btn tc-outline-none tc-flex tc-flex-row tc-items-center" @click.prevent="gotoPrevious"><span>Previous</span>
+          <button class="tc-rounded-full tc-font-medium poppins tc-py-2 tc-px-4 tc-cursor-pointer clickable-2 hoverable paginate-btn tc-outline-none tc-flex tc-flex-row tc-items-center" @click="gotoPrevious"><span>Previous</span>
             <div class="lds-dual-ring" style="margin: 0" v-if="backing"></div>
           </button>
-          <button class="tc-ml-3 tc-hidden lg:tc-flex purple tc-p-2" @click.prevent="gotoFirst">First</button>
+          <button class="tc-ml-3 tc-hidden lg:tc-flex purple tc-p-2" @click="gotoFirst">First</button>
         </div>
 
         <p>page {{$route.query.p}} <span class="purple"> of</span> {{numOfPages}}</p>
 
         <div class="tc-flex tc-flex-row tc-items-center">
-          <button class="tc-hidden lg:tc-flex tc-mr-3 purple tc-p-2" @click.prevent="gotoLast">Last</button>
-          <button class="tc-rounded-full tc-font-medium poppins tc-py-2 tc-px-4 tc-cursor-pointer clickable-2 hoverable paginate-btn tc-outline-none tc-flex tc-flex-row tc-items-center" @click.prevent="gotoNext"><span>Next</span>
+          <button class="tc-hidden lg:tc-flex tc-mr-3 purple tc-p-2" @click="gotoLast">Last</button>
+          <button class="tc-rounded-full tc-font-medium poppins tc-py-2 tc-px-4 tc-cursor-pointer clickable-2 hoverable paginate-btn tc-outline-none tc-flex tc-flex-row tc-items-center" @click="gotoNext"><span>Next</span>
             <div class="lds-dual-ring" style="margin: 0" v-if="nexting"></div>
           </button>
         </div>
@@ -190,9 +190,6 @@ export default {
     }
   },
   methods: {
-    hey() {
-      console.log(this.filterTerm)
-    },
     checkAvailabilty(index) {
       if (!this.searchOptions[index].active) {
         this.showError('Feature Coming Soon !')
@@ -320,7 +317,20 @@ export default {
       this.showError('Please enter a valid name')
     }
   },
-  created() {},
+  created() {
+    if (process.browser) {
+      let browserName = navigator.appName,
+        verOffset
+      const nAgt = navigator.userAgent
+
+      if ((verOffset = nAgt.indexOf("Safari")) != -1) {
+        browserName = 'Safari'
+        this.showError('If scroll display error on Safari, try Chrome Browser.')
+      }
+
+    }
+
+  },
   mounted() {
     this.totalCount = this.$store.state.totalResultCount
     if (!this.searchResults.length) {
