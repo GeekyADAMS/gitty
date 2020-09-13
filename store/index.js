@@ -10,7 +10,7 @@ export const state = () => ({
 export const mutations = {
   storeResults (state, payload) {
     state.searchResults = payload.items
-    state. totalResultCount = payload.total_count
+    state.totalResultCount = payload.total_count
   }
 }
 

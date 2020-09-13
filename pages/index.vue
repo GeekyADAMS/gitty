@@ -11,7 +11,7 @@
 
     <input type="username" class="tc-mt-10 w-mid-grid tc-ml-2 tc-flex tc-flex-col text-center tc-items-center tc-justify-center tc-font-bold tc-box-border sub-text tc-px-5" placeholder="e.g GeekyADAMS" v-model="user" @keyup.enter="searchUser" />
 
-    <button type="submit" class="tc-mt-16 tc-round searchBtn tc-font-bold tc-flex tc-flex-row tc-items-center tc-justify-center poppins tc-py-2 tc-px-5 tc-cursor-pointer clickable-2 tc-ml-2 hoverable" @click.prevent="searchUser">
+    <button type="submit" class="tc-mt-16 tc-round searchBtn tc-font-bold tc-flex tc-flex-row tc-items-center tc-justify-center poppins tc-py-2 tc-px-5 tc-cursor-pointer clickable-2 tc-ml-2 hoverable" @click="searchUser">
       <span>{{btnText}}</span>
       <div class="lds-dual-ring" v-if="btnText === 'SEARCHING'"></div>
     </button>

@@ -4,7 +4,7 @@ export default {
       this.errMessage = message
       setTimeout(() => {
         this.errMessage = null
-      }, 3000)
+      }, 4000)
     }
   }
 }
