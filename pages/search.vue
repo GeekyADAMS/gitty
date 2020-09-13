@@ -52,7 +52,7 @@
     <div class="w-70p sm-w100p tc-bg-white h-95p tc-rounded-lg tc-flex tc-flex-col poppins tc-border-box tc-p-5">
       <p class="tc-font-bold fade-text sub-text">{{totalCount |  toFormattedDigit}} Users <span class="small-text tc-font-normal">/ showing {{searchResults.length}}</span></p>
 
-      <div class="tc-flex tc-flex-col tc-w-full tc-mt-3 h-60 tc-overflow-y-scroll tc-scrolling-auto tc-items-center" style="border-top: .6px solid var(--purple); border-bottom: .6px solid var(--purple); border-radius: 15px;">
+      <div class="tc-flex tc-flex-col tc-w-full tc-mt-3 h-60 tc-overflow-y-scroll tc-items-center" style="border-top: .6px solid var(--purple); border-bottom: .6px solid var(--purple); border-radius: 15px;">
         <div class="tc-flex tc-flex-col tc-w-full h-fit">
           <div class="card tc-w-full tc-h-auto tc-mb-3 tc-bg-white tc-flex tc-flex-row tc-p-3 tc-border-box poppins tc-flex-wrap" v-for="(user, index) in searchResults" :key="index">
             <div class="tc-flex tc-flex-row ">
@@ -319,15 +319,12 @@ export default {
   },
   created() {
     if (process.browser) {
-      let browserName = navigator.appName,
-        verOffset
-      const nAgt = navigator.userAgent
+      let isSafari = navigator.vendor && navigator.vendor.indexOf('Apple') > -1 &&
+        navigator.userAgent &&
+        navigator.userAgent.indexOf('CriOS') == -1 &&
+        navigator.userAgent.indexOf('FxiOS') == -1;
 
-      if ((verOffset = nAgt.indexOf("Safari")) != -1) {
-        browserName = 'Safari'
-        this.showError('If scroll display error on Safari, try Chrome Browser.')
-      }
-
+      if (isSafari) this.showError('If scroll display error on Safari, try Chrome Browser.')
     }
 
   },
